@@ -11,7 +11,6 @@ cblol_df['geff team'] = cblol_df['damageshare'] / cblol_df['earnedgoldshare']
 columns_player_analysis = [
     "playername",
     "position",
-    "champion",
     "dpm",
     "earned gpm",
     "geff",
@@ -27,8 +26,31 @@ columns_player_analysis = [
     "firstbloodvictim",
     "damageshare",
     "earnedgoldshare",
-    "geff team",
-    "result"
+    "geff team"
 ]
 
-cblol_player_analysis_df = cblol_df[columns_player_analysis]
+player_analysis_agg_dict =     {
+        "position": "first",
+        "dpm": "mean",
+        "earned gpm": "mean",
+        "geff": "mean",
+        "wcpm": "mean",
+        "wpm": "mean",
+        "vspm": "mean",
+        "cspm": "mean",
+        "golddiffat15": "mean",
+        "csdiffat15": "mean",
+        "xpdiffat15": "mean",
+        "firstbloodkill": "mean",
+        "firstbloodassist": "mean",
+        "firstbloodvictim": "mean",
+        "damageshare": "mean",
+        "earnedgoldshare": "mean",
+        "geff team": "mean"
+    }
+
+cblol_player_analysis_df = cblol_df[columns_player_analysis].copy()
+
+cblol_player_avg_df = cblol_player_analysis_df.groupby('playername').agg(player_analysis_agg_dict).reset_index()
+
+print(cblol_player_avg_df.head())
