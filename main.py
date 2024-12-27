@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import db_conn as conn
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
 
