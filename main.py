@@ -73,12 +73,21 @@ columns_to_score = [
 
 cblol_player_avg_df["total_score"] = 0
 
-for column in columns_to_score:
-    top5_df = cblol_player_avg_df.nlargest(5, column)
+top5_list = []
 
-    print(column)
-    print(top5_df)
-    print("######################")
+for column in columns_to_score:
+    top5_df = cblol_player_avg_df.nlargest(5, column)[["playername",column]]
+
+    # print(column)
+    # print(top5_df)
+    # print("######################")
+
+    top5_dict = {
+        "sector": column,
+        "split" : cblol_filtered_df["split"].iloc[0],
+        "patch" : float(cblol_filtered_df["patch"].iloc[0]),
+        "date" : cblol_filtered_df["date"].iloc[0]
+    }
     
     for rank, score in enumerate(scores):
         if rank < len(top5_df):
@@ -88,12 +97,22 @@ for column in columns_to_score:
                 "total_score"
             ] += score
 
+            top5_dict[playernames] = {
+                "value" : top5_df.iloc[rank][column],
+                "score" : score
+            }
+
+            
+    top5_list.append(top5_dict.copy())
+
+conn.create_top5(top5_list)
+
 cblol_player_avg_df["total_score"] += (
     cblol_player_avg_df["firstbloodkill"] * 5
     + cblol_player_avg_df["firstbloodassist"] * 5
     - cblol_player_avg_df["firstbloodvictim"] * 5
 )
 
-print(cblol_player_avg_df[["playername", "total_score"]].sort_values(by="total_score", ascending=False))
+# print(cblol_player_avg_df[["playername", "total_score"]].sort_values(by="total_score", ascending=False))
 
 # print(cblol_player_avg_df.head())
