@@ -78,10 +78,6 @@ top5_list = []
 for column in columns_to_score:
     top5_df = cblol_player_avg_df.nlargest(5, column)[["playername",column]]
 
-    # print(column)
-    # print(top5_df)
-    # print("######################")
-
     top5_dict = {
         "sector": column,
         "split" : cblol_filtered_df["split"].iloc[0],
@@ -105,7 +101,7 @@ for column in columns_to_score:
             
     top5_list.append(top5_dict.copy())
 
-# conn.create_top5(top5_list)
+conn.create_top5(top5_list)
 
 cblol_player_avg_df["total_score"] += (
     cblol_player_avg_df["firstbloodkill"] * 5
