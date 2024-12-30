@@ -10,8 +10,16 @@ all_pl_score_collection = conn[ext.all_pl_score_collection]
 
 def create_top5(top5_list):
     try:
-        top5_insert = top5_collection.insert_many(top5_list)
-        return top5_insert
+        for top5 in top5_list:
+            filter_condition = {"date": top5["date"]}
+
+            upsert_top5 = {
+                "$setOnInsert": top5
+            }
+            
+            top5_collection.update_one(filter_condition, upsert_top5, upsert=True)
+        
+        return True
     except Exception as e:
         print(e)
         return e
