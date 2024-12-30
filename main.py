@@ -121,7 +121,7 @@ update_player = conn.update_player_record(cblol_player_score_list)
 
 if not update_player:
     for i in cblol_player_score_list:
-        i["date"] = list(i["date"])
+        i["date"] = [i["date"]]
     conn.create_player_record(cblol_player_score_list)
 
 print(cblol_player_avg_df.head())
