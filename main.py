@@ -118,11 +118,14 @@ score_filter = ["playername", "total_score"]
 cblol_player_score_list = cblol_player_avg_df[score_filter].to_dict(orient="records")
 
 for i in cblol_player_score_list:
+    i["split"] = cblol_filtered_df["split"].iloc[0]
     i["date"] = cblol_filtered_df["date"].iloc[0]
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
 if not update_player:
+    for i in cblol_player_score_list:
+        i["date"] = list(i["date"])
     conn.create_player_record(cblol_player_score_list)
 
 print(cblol_player_avg_df.head())
