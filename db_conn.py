@@ -29,7 +29,8 @@ def update_player_record(pl_list):
         try:
             upd_filter = {
                 "playername" : pl["playername"],
-                "date": {"$ne": pl["date"]}
+                "date": {"$ne": pl["date"]},
+                "split": pl["split"]
                 }
             update_info = {
                 "$inc" : {"total_score" : pl["total_score"]},
@@ -39,5 +40,7 @@ def update_player_record(pl_list):
         except Exception as e:
             print(e)
             return e
-        
-    return True
+    if str(player_update) == "UpdateResult({'n': 0, 'nModified': 0, 'ok': 1.0, 'updatedExisting': False}, acknowledged=True)":
+        return False
+    else:
+        return True
