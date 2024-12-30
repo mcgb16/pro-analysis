@@ -27,7 +27,10 @@ def create_player_record(pl_list):
 def update_player_record(pl_list):
     for pl in pl_list:
         try:
-            upd_filter = {"playername" : pl["playername"]}
+            upd_filter = {
+                "playername" : pl["playername"],
+                "date": {"$ne": pl["date"]}
+                }
             update_info = {
                 "$inc" : {"total_score" : pl["total_score"]},
                 "$push" : {"date": pl["date"]}
