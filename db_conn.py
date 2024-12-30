@@ -26,8 +26,19 @@ def create_top5(top5_list):
 
 def create_player_record(pl_list):
     try:
-        player_insert = all_pl_score_collection.insert_many(pl_list)
-        return player_insert
+        for pl in pl_list:
+            filter_condition = {
+                "playername": pl["playername"],
+                "split" : pl["split"]
+                }
+
+            upsert_pl = {
+                "$setOnInsert": pl
+            }
+            
+            all_pl_score_collection.update_one(filter_condition, upsert_pl, upsert=True)
+        
+        return True
     except Exception as e:
         print(e)
         return e
