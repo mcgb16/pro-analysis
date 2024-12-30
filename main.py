@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import db_conn as conn
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
 
@@ -72,12 +73,17 @@ columns_to_score = [
 
 cblol_player_avg_df["total_score"] = 0
 
-for column in columns_to_score:
-    top5_df = cblol_player_avg_df.nlargest(5, column)
+top5_list = []
 
-    print(column)
-    print(top5_df)
-    print("######################")
+for column in columns_to_score:
+    top5_df = cblol_player_avg_df.nlargest(5, column)[["playername",column]]
+
+    top5_dict = {
+        "sector": column,
+        "split" : cblol_filtered_df["split"].iloc[0],
+        "patch" : float(cblol_filtered_df["patch"].iloc[0]),
+        "date" : cblol_filtered_df["date"].iloc[0]
+    }
     
     for rank, score in enumerate(scores):
         if rank < len(top5_df):
@@ -87,12 +93,35 @@ for column in columns_to_score:
                 "total_score"
             ] += score
 
+            top5_dict[playernames] = {
+                "value" : top5_df.iloc[rank][column],
+                "score" : score
+            }
+
+            
+    top5_list.append(top5_dict.copy())
+
+conn.create_top5(top5_list)
+
 cblol_player_avg_df["total_score"] += (
     cblol_player_avg_df["firstbloodkill"] * 5
     + cblol_player_avg_df["firstbloodassist"] * 5
     - cblol_player_avg_df["firstbloodvictim"] * 5
 )
 
-print(cblol_player_avg_df[["playername", "total_score"]].sort_values(by="total_score", ascending=False))
+score_filter = ["playername", "total_score"]
 
-# print(cblol_player_avg_df.head())
+cblol_player_score_list = cblol_player_avg_df[score_filter].to_dict(orient="records")
+
+for i in cblol_player_score_list:
+    i["split"] = cblol_filtered_df["split"].iloc[0]
+    i["date"] = cblol_filtered_df["date"].iloc[0]
+
+update_player = conn.update_player_record(cblol_player_score_list)
+
+if not update_player:
+    for i in cblol_player_score_list:
+        i["date"] = [i["date"]]
+    conn.create_player_record(cblol_player_score_list)
+
+print(cblol_player_avg_df.head())
