@@ -105,7 +105,7 @@ for column in columns_to_score:
             
     top5_list.append(top5_dict.copy())
 
-conn.create_top5(top5_list)
+# conn.create_top5(top5_list)
 
 cblol_player_avg_df["total_score"] += (
     cblol_player_avg_df["firstbloodkill"] * 5
@@ -113,6 +113,16 @@ cblol_player_avg_df["total_score"] += (
     - cblol_player_avg_df["firstbloodvictim"] * 5
 )
 
-# print(cblol_player_avg_df[["playername", "total_score"]].sort_values(by="total_score", ascending=False))
+score_filter = ["playername", "total_score"]
 
-# print(cblol_player_avg_df.head())
+cblol_player_score_list = cblol_player_avg_df[score_filter].to_dict(orient="records")
+
+for i in cblol_player_score_list:
+    i["date"] = cblol_filtered_df["date"].iloc[0]
+
+update_player = conn.update_player_record(cblol_player_score_list)
+
+if not update_player:
+    conn.create_player_record(cblol_player_score_list)
+
+print(cblol_player_avg_df.head())
