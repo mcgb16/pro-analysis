@@ -11,7 +11,11 @@ date_filter = input("Digite uma data (YYYY-MM-DD): ")
 cblol_df = lol_df[lol_df["league"] == "CBLOL"].copy()
 cblol_df['geff'] = cblol_df['dpm'] / cblol_df['earned gpm']
 cblol_df['geff team'] = cblol_df['damageshare'] / cblol_df['earnedgoldshare']
-cblol_df['kp'] = (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["teamkills"]
+cblol_df['kp'] = np.where(
+    cblol_df['teamkills'] > 5, 
+    (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["teamkills"], 
+    0
+)
 cblol_df['kda'] = (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["deaths"].replace(0, np.nan)
 cblol_df['kda'] = cblol_df['kda'].fillna(cblol_df["kills"] + cblol_df["assists"])
 
