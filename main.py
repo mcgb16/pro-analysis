@@ -82,7 +82,8 @@ for column in columns_to_score:
         "sector": column,
         "split" : cblol_filtered_df["split"].iloc[0],
         "patch" : float(cblol_filtered_df["patch"].iloc[0]),
-        "date" : cblol_filtered_df["date"].iloc[0]
+        "date" : cblol_filtered_df["date"].iloc[0],
+        "playoffs" : int(cblol_filtered_df["playoffs"].iloc[0])
     }
     
     for rank, score in enumerate(scores):
@@ -97,7 +98,6 @@ for column in columns_to_score:
                 "value" : top5_df.iloc[rank][column],
                 "score" : score
             }
-
             
     top5_list.append(top5_dict.copy())
 
@@ -116,6 +116,7 @@ cblol_player_score_list = cblol_player_avg_df[score_filter].to_dict(orient="reco
 for i in cblol_player_score_list:
     i["split"] = cblol_filtered_df["split"].iloc[0]
     i["date"] = cblol_filtered_df["date"].iloc[0]
+    i["playoffs"] = int(cblol_filtered_df["playoffs"].iloc[0])
 
 update_player = conn.update_player_record(cblol_player_score_list)
 

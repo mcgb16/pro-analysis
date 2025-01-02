@@ -11,7 +11,10 @@ all_pl_score_collection = conn[ext.all_pl_score_collection]
 def create_top5(top5_list):
     try:
         for top5 in top5_list:
-            filter_condition = {"date": top5["date"]}
+            filter_condition = {
+                "date": top5["date"],
+                "sector": top5["sector"]
+                }
 
             upsert_top5 = {
                 "$setOnInsert": top5
@@ -29,7 +32,8 @@ def create_player_record(pl_list):
         for pl in pl_list:
             filter_condition = {
                 "playername": pl["playername"],
-                "split" : pl["split"]
+                "split" : pl["split"],
+                "playoffs" : pl["playoffs"]
                 }
 
             upsert_pl = {
@@ -49,7 +53,8 @@ def update_player_record(pl_list):
             upd_filter = {
                 "playername" : pl["playername"],
                 "date": {"$ne": pl["date"]},
-                "split": pl["split"]
+                "split": pl["split"],
+                "playoffs": pl["playoffs"]
                 }
             update_info = {
                 "$inc" : {"total_score" : pl["total_score"]},
@@ -63,3 +68,9 @@ def update_player_record(pl_list):
         return False
     else:
         return True
+    
+def get_player():
+    pass
+
+def get_top5():
+    pass
