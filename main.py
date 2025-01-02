@@ -18,6 +18,11 @@ cblol_df['kp'] = np.where(
 )
 cblol_df['kda'] = (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["deaths"].replace(0, np.nan)
 cblol_df['kda'] = cblol_df['kda'].fillna(cblol_df["kills"] + cblol_df["assists"])
+cblol_df["csdiffat15"] = np.where(
+    cblol_df["position"] != "sup",
+    cblol_df["csdiffat15"],
+    0
+)
 
 cblol_filtered_df = cblol_df[cblol_df["date"].str.contains(date_filter)]
 
