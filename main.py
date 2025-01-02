@@ -11,9 +11,18 @@ date_filter = input("Digite uma data (YYYY-MM-DD): ")
 cblol_df = lol_df[lol_df["league"] == "CBLOL"].copy()
 cblol_df['geff'] = cblol_df['dpm'] / cblol_df['earned gpm']
 cblol_df['geff team'] = cblol_df['damageshare'] / cblol_df['earnedgoldshare']
-cblol_df['kp'] = (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["teamkills"]
+cblol_df['kp'] = np.where(
+    cblol_df['teamkills'] > 5, 
+    (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["teamkills"], 
+    0
+)
 cblol_df['kda'] = (cblol_df["kills"] + cblol_df["assists"]) / cblol_df["deaths"].replace(0, np.nan)
 cblol_df['kda'] = cblol_df['kda'].fillna(cblol_df["kills"] + cblol_df["assists"])
+cblol_df["csdiffat15"] = np.where(
+    cblol_df["position"] != "sup",
+    cblol_df["csdiffat15"],
+    0
+)
 
 cblol_filtered_df = cblol_df[cblol_df["date"].str.contains(date_filter)]
 
@@ -82,7 +91,8 @@ for column in columns_to_score:
         "sector": column,
         "split" : cblol_filtered_df["split"].iloc[0],
         "patch" : float(cblol_filtered_df["patch"].iloc[0]),
-        "date" : cblol_filtered_df["date"].iloc[0]
+        "date" : cblol_filtered_df["date"].iloc[0],
+        "playoffs" : int(cblol_filtered_df["playoffs"].iloc[0])
     }
     
     for rank, score in enumerate(scores):
@@ -97,7 +107,6 @@ for column in columns_to_score:
                 "value" : top5_df.iloc[rank][column],
                 "score" : score
             }
-
             
     top5_list.append(top5_dict.copy())
 
@@ -116,6 +125,7 @@ cblol_player_score_list = cblol_player_avg_df[score_filter].to_dict(orient="reco
 for i in cblol_player_score_list:
     i["split"] = cblol_filtered_df["split"].iloc[0]
     i["date"] = cblol_filtered_df["date"].iloc[0]
+    i["playoffs"] = int(cblol_filtered_df["playoffs"].iloc[0])
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
@@ -124,4 +134,28 @@ if not update_player:
         i["date"] = [i["date"]]
     conn.create_player_record(cblol_player_score_list)
 
-print(cblol_player_avg_df.head())
+split = "Split 1"
+playoff = 0
+
+player_search = conn.get_player(split, playoff)
+
+pl_top5_list = []
+
+for i in player_search:
+    top5_search = conn.get_top5(split, playoff)
+    pl_top5_dict = {}
+    top5s = []
+    scr = []
+    dates = []
+    for j in top5_search:
+        if i["playername"] in j:
+            top5s.append(j["sector"])
+            scr.append(j[i["playername"]]["score"])
+            dates.append(j["date"])
+    pl_top5_dict["player"] = i["playername"]
+    pl_top5_dict["top 5s"] = top5s
+    pl_top5_dict["scores"] = scr
+    pl_top5_dict["dates"] = dates
+    pl_top5_list.append(pl_top5_dict.copy())
+
+print(pl_top5_list)
