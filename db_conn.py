@@ -69,8 +69,22 @@ def update_player_record(pl_list):
     else:
         return True
     
-def get_player():
-    pass
+def get_player(split, playoff):
+    search_filter = {
+        "split": split,
+        "playoff": playoff,
+    }
 
-def get_top5():
-    pass
+    results = all_pl_score_collection.find(search_filter)
+
+    return results
+
+def get_top5(split, playoff):
+    search_filter = {
+        "split": split,
+        "playoff": playoff,
+    }
+
+    results = top5_collection.find(search_filter)
+
+    return results
