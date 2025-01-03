@@ -10,82 +10,35 @@ date_filter = input("Digite uma data (YYYY-MM-DD): ")
 
 cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
 
-cblol_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_filter)
+cblol_date_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_filter)
 
-
-columns_player_analysis = [
-    "playername",
-    "position",
-    "kda",
-    "dpm",
-    "earned gpm",
-    "geff",
-    "wcpm",
-    "wpm",
-    "vspm",
-    "cspm",
-    "golddiffat15",
-    "csdiffat15",
-    "xpdiffat15",
-    "firstbloodkill",
-    "firstbloodassist",
-    "firstbloodvictim",
-    "damageshare",
-    "earnedgoldshare",
-    "geff team",
-    "kp"
-]
-
-player_analysis_agg_dict = {
-        "position": "first",
-        "kda": "mean",
-        "dpm": "mean",
-        "earned gpm": "mean",
-        "geff": "mean",
-        "wcpm": "mean",
-        "wpm": "mean",
-        "vspm": "mean",
-        "cspm": "mean",
-        "golddiffat15": "mean",
-        "csdiffat15": "mean",
-        "xpdiffat15": "mean",
-        "firstbloodkill": "sum",
-        "firstbloodassist": "sum",
-        "firstbloodvictim": "sum",
-        "damageshare": "mean",
-        "earnedgoldshare": "mean",
-        "geff team": "mean",
-        "kp" : "mean"
-    }
-
-cblol_player_analysis_df = cblol_filtered_df[columns_player_analysis].copy()
-cblol_player_avg_df = cblol_player_analysis_df.groupby('playername').agg(player_analysis_agg_dict).reset_index()
+cblol_player_analysis_df = df_gen.create_player_analysis_dataframe(cblol_date_filtered_df)
 
 scores = [10, 8, 6, 4, 2]
 columns_to_score = [
     "kda", "dpm", "vspm", "cspm", "wcpm", "wpm", "earned gpm", "geff", "geff team", "xpdiffat15", "csdiffat15", "golddiffat15", "kp"
 ]
 
-cblol_player_avg_df["total_score"] = 0
+cblol_player_analysis_df["total_score"] = 0
 
 top5_list = []
 
 for column in columns_to_score:
-    top5_df = cblol_player_avg_df.nlargest(5, column)[["playername",column]]
+    top5_df = cblol_player_analysis_df.nlargest(5, column)[["playername",column]]
 
     top5_dict = {
         "sector": column,
-        "split" : cblol_filtered_df["split"].iloc[0],
-        "patch" : float(cblol_filtered_df["patch"].iloc[0]),
-        "date" : cblol_filtered_df["date"].iloc[0],
-        "playoffs" : int(cblol_filtered_df["playoffs"].iloc[0])
+        "split" : cblol_date_filtered_df["split"].iloc[0],
+        "patch" : float(cblol_date_filtered_df["patch"].iloc[0]),
+        "date" : cblol_date_filtered_df["date"].iloc[0],
+        "playoffs" : int(cblol_date_filtered_df["playoffs"].iloc[0])
     }
     
     for rank, score in enumerate(scores):
         if rank < len(top5_df):
             playernames = top5_df.iloc[rank]["playername"]
-            cblol_player_avg_df.loc[
-                cblol_player_avg_df["playername"] == playernames, 
+            cblol_player_analysis_df.loc[
+                cblol_player_analysis_df["playername"] == playernames, 
                 "total_score"
             ] += score
 
@@ -98,20 +51,20 @@ for column in columns_to_score:
 
 conn.create_top5(top5_list)
 
-cblol_player_avg_df["total_score"] += (
-    cblol_player_avg_df["firstbloodkill"] * 5
-    + cblol_player_avg_df["firstbloodassist"] * 5
-    - cblol_player_avg_df["firstbloodvictim"] * 5
+cblol_player_analysis_df["total_score"] += (
+    cblol_player_analysis_df["firstbloodkill"] * 5
+    + cblol_player_analysis_df["firstbloodassist"] * 5
+    - cblol_player_analysis_df["firstbloodvictim"] * 5
 )
 
 score_filter = ["playername", "total_score"]
 
-cblol_player_score_list = cblol_player_avg_df[score_filter].to_dict(orient="records")
+cblol_player_score_list = cblol_player_analysis_df[score_filter].to_dict(orient="records")
 
 for i in cblol_player_score_list:
-    i["split"] = cblol_filtered_df["split"].iloc[0]
-    i["date"] = cblol_filtered_df["date"].iloc[0]
-    i["playoffs"] = int(cblol_filtered_df["playoffs"].iloc[0])
+    i["split"] = cblol_date_filtered_df["split"].iloc[0]
+    i["date"] = cblol_date_filtered_df["date"].iloc[0]
+    i["playoffs"] = int(cblol_date_filtered_df["playoffs"].iloc[0])
 
 update_player = conn.update_player_record(cblol_player_score_list)
 

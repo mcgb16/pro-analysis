@@ -28,3 +28,53 @@ def filter_league_dataframe_by_date(league_df, date_filter):
     league_filtered_df = league_df[league_df["date"].str.contains(date_filter)]
 
     return league_filtered_df
+
+def create_player_analysis_dataframe(league_date_filtered_df):
+    columns_player_analysis = [
+    "playername",
+    "position",
+    "kda",
+    "dpm",
+    "earned gpm",
+    "geff",
+    "wcpm",
+    "wpm",
+    "vspm",
+    "cspm",
+    "golddiffat15",
+    "csdiffat15",
+    "xpdiffat15",
+    "firstbloodkill",
+    "firstbloodassist",
+    "firstbloodvictim",
+    "damageshare",
+    "earnedgoldshare",
+    "geff team",
+    "kp"
+    ]
+
+    player_analysis_agg_dict = {
+            "position": "first",
+            "kda": "mean",
+            "dpm": "mean",
+            "earned gpm": "mean",
+            "geff": "mean",
+            "wcpm": "mean",
+            "wpm": "mean",
+            "vspm": "mean",
+            "cspm": "mean",
+            "golddiffat15": "mean",
+            "csdiffat15": "mean",
+            "xpdiffat15": "mean",
+            "firstbloodkill": "sum",
+            "firstbloodassist": "sum",
+            "firstbloodvictim": "sum",
+            "damageshare": "mean",
+            "earnedgoldshare": "mean",
+            "geff team": "mean",
+            "kp" : "mean"
+        }
+
+    league_player_analysis_df = league_date_filtered_df[columns_player_analysis].copy().groupby('playername').agg(player_analysis_agg_dict).reset_index()
+
+    return league_player_analysis_df
