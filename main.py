@@ -5,9 +5,12 @@ import df_generators as df_gen
 import analysis
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
-lol_df = df_gen.create_lol_dataframe(lol_csv_path)
-
 date_filter = input("Digite uma data (YYYY-MM-DD): ")
+split = "Split 1"
+playoff = 0
+
+
+lol_df = df_gen.create_lol_dataframe(lol_csv_path)
 
 cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
 
@@ -29,8 +32,5 @@ if not update_player:
     for i in cblol_player_score_list:
         i["date"] = [i["date"]]
     conn.create_player_record(cblol_player_score_list)
-
-split = "Split 1"
-playoff = 0
 
 pl_top5_list = analysis.create_pltop5_dict_list(split, playoff)
