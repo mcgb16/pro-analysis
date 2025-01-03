@@ -1,10 +1,10 @@
 import pandas as pd
 import numpy as np
 import db_conn as conn
+import df_generators as df_gen
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
-
-lol_df = pd.read_csv(lol_csv_path , sep="," , dtype={'url': str})
+lol_df = df_gen.create_lol_dataframe(lol_csv_path)
 
 date_filter = input("Digite uma data (YYYY-MM-DD): ")
 
