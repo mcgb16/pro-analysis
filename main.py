@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import db_conn as conn
 import df_generators as df_gen
+import analysis
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
 lol_df = df_gen.create_lol_dataframe(lol_csv_path)
@@ -14,40 +15,9 @@ cblol_date_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_f
 
 cblol_player_analysis_df = df_gen.create_player_analysis_dataframe(cblol_date_filtered_df)
 
-scores = [10, 8, 6, 4, 2]
-columns_to_score = [
-    "kda", "dpm", "vspm", "cspm", "wcpm", "wpm", "earned gpm", "geff", "geff team", "xpdiffat15", "csdiffat15", "golddiffat15", "kp"
-]
+cblol_top5_list = analysis.create_top5_dict_list(cblol_player_analysis_df)
 
-top5_list = []
-
-for column in columns_to_score:
-    top5_df = cblol_player_analysis_df.nlargest(5, column)[["playername",column]]
-
-    top5_dict = {
-        "sector": column,
-        "split" : cblol_player_analysis_df["split"].iloc[0],
-        "patch" : cblol_player_analysis_df["patch"].iloc[0],
-        "date" : cblol_player_analysis_df["date"].iloc[0],
-        "playoffs" : int(cblol_player_analysis_df["playoffs"].iloc[0])
-    }
-    
-    for rank, score in enumerate(scores):
-        if rank < len(top5_df):
-            playernames = top5_df.iloc[rank]["playername"]
-            cblol_player_analysis_df.loc[
-                cblol_player_analysis_df["playername"] == playernames, 
-                "total_score"
-            ] += score
-
-            top5_dict[playernames] = {
-                "value" : top5_df.iloc[rank][column],
-                "score" : score
-            }
-            
-    top5_list.append(top5_dict.copy())
-
-conn.create_top5(top5_list)
+conn.create_top5(cblol_top5_list)
 
 cblol_player_analysis_df["total_score"] += (
     cblol_player_analysis_df["firstbloodkill"] * 5
