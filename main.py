@@ -10,7 +10,7 @@ date_filter = input("Digite uma data (YYYY-MM-DD): ")
 
 cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
 
-cblol_filtered_df = cblol_df[cblol_df["date"].str.contains(date_filter)]
+cblol_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_filter)
 
 
 columns_player_analysis = [

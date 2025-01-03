@@ -23,3 +23,8 @@ def create_league_dataframe(lol_df, league):
     )
 
     return lol_league_df
+
+def filter_league_dataframe_by_date(league_df, date_filter):
+    league_filtered_df = league_df[league_df["date"].str.contains(date_filter)]
+
+    return league_filtered_df
