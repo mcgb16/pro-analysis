@@ -19,8 +19,6 @@ columns_to_score = [
     "kda", "dpm", "vspm", "cspm", "wcpm", "wpm", "earned gpm", "geff", "geff team", "xpdiffat15", "csdiffat15", "golddiffat15", "kp"
 ]
 
-cblol_player_analysis_df["total_score"] = 0
-
 top5_list = []
 
 for column in columns_to_score:
@@ -28,10 +26,10 @@ for column in columns_to_score:
 
     top5_dict = {
         "sector": column,
-        "split" : cblol_date_filtered_df["split"].iloc[0],
-        "patch" : float(cblol_date_filtered_df["patch"].iloc[0]),
-        "date" : cblol_date_filtered_df["date"].iloc[0],
-        "playoffs" : int(cblol_date_filtered_df["playoffs"].iloc[0])
+        "split" : cblol_player_analysis_df["split"].iloc[0],
+        "patch" : cblol_player_analysis_df["patch"].iloc[0],
+        "date" : cblol_player_analysis_df["date"].iloc[0],
+        "playoffs" : int(cblol_player_analysis_df["playoffs"].iloc[0])
     }
     
     for rank, score in enumerate(scores):
@@ -62,9 +60,9 @@ score_filter = ["playername", "total_score"]
 cblol_player_score_list = cblol_player_analysis_df[score_filter].to_dict(orient="records")
 
 for i in cblol_player_score_list:
-    i["split"] = cblol_date_filtered_df["split"].iloc[0]
-    i["date"] = cblol_date_filtered_df["date"].iloc[0]
-    i["playoffs"] = int(cblol_date_filtered_df["playoffs"].iloc[0])
+    i["split"] = cblol_player_analysis_df["split"].iloc[0]
+    i["date"] = cblol_player_analysis_df["date"].iloc[0]
+    i["playoffs"] = int(cblol_player_analysis_df["playoffs"].iloc[0])
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
