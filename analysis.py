@@ -1,3 +1,5 @@
+import db_conn as conn
+
 def create_top5_dict_list(league_player_analysis_df):
     scores = [10, 8, 6, 4, 2]
     columns_to_score = [
@@ -48,3 +50,27 @@ def create_plscore_dict_list(league_player_analysis_df):
     league_player_score_list = league_player_analysis_df[score_filter].to_dict(orient="records")
 
     return league_player_score_list
+
+def create_pltop5_dict_list(split, is_playoffs):
+    player_search = conn.get_player(split, is_playoffs)
+
+    pl_top5_list = []
+
+    for i in player_search:
+        top5_search = conn.get_top5(split, is_playoffs)
+        pl_top5_dict = {}
+        top5s = []
+        scr = []
+        dates = []
+        for j in top5_search:
+            if i["playername"] in j:
+                top5s.append(j["sector"])
+                scr.append(j[i["playername"]]["score"])
+                dates.append(j["date"])
+        pl_top5_dict["player"] = i["playername"]
+        pl_top5_dict["top 5s"] = top5s
+        pl_top5_dict["scores"] = scr
+        pl_top5_dict["dates"] = dates
+        pl_top5_list.append(pl_top5_dict.copy())
+
+    return pl_top5_list

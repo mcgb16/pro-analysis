@@ -33,25 +33,4 @@ if not update_player:
 split = "Split 1"
 playoff = 0
 
-player_search = conn.get_player(split, playoff)
-
-pl_top5_list = []
-
-for i in player_search:
-    top5_search = conn.get_top5(split, playoff)
-    pl_top5_dict = {}
-    top5s = []
-    scr = []
-    dates = []
-    for j in top5_search:
-        if i["playername"] in j:
-            top5s.append(j["sector"])
-            scr.append(j[i["playername"]]["score"])
-            dates.append(j["date"])
-    pl_top5_dict["player"] = i["playername"]
-    pl_top5_dict["top 5s"] = top5s
-    pl_top5_dict["scores"] = scr
-    pl_top5_dict["dates"] = dates
-    pl_top5_list.append(pl_top5_dict.copy())
-
-print(pl_top5_list)
+pl_top5_list = analysis.create_pltop5_dict_list(split, playoff)
