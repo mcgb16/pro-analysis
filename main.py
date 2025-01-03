@@ -21,14 +21,7 @@ conn.create_top5(cblol_top5_list)
 
 first_blood_score_insert = analysis.insert_first_blood_score(cblol_player_analysis_df)
 
-score_filter = ["playername", "total_score"]
-
-cblol_player_score_list = cblol_player_analysis_df[score_filter].to_dict(orient="records")
-
-for i in cblol_player_score_list:
-    i["split"] = cblol_player_analysis_df["split"].iloc[0]
-    i["date"] = cblol_player_analysis_df["date"].iloc[0]
-    i["playoffs"] = int(cblol_player_analysis_df["playoffs"].iloc[0])
+cblol_player_score_list = analysis.create_plscore_dict_list(cblol_player_analysis_df)
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
