@@ -32,3 +32,12 @@ def create_top5_dict_list(league_player_analysis_df):
                 
         top5_list.append(top5_dict.copy())
     return top5_list
+
+def insert_first_blood_score(league_player_analysis_df):
+    league_player_analysis_df["total_score"] += (
+        league_player_analysis_df["firstbloodkill"] * 5
+        + league_player_analysis_df["firstbloodassist"] * 5
+        - league_player_analysis_df["firstbloodvictim"] * 5
+    )
+    
+    return

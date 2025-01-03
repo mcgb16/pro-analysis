@@ -19,11 +19,7 @@ cblol_top5_list = analysis.create_top5_dict_list(cblol_player_analysis_df)
 
 conn.create_top5(cblol_top5_list)
 
-cblol_player_analysis_df["total_score"] += (
-    cblol_player_analysis_df["firstbloodkill"] * 5
-    + cblol_player_analysis_df["firstbloodassist"] * 5
-    - cblol_player_analysis_df["firstbloodvictim"] * 5
-)
+first_blood_score_insert = analysis.insert_first_blood_score(cblol_player_analysis_df)
 
 score_filter = ["playername", "total_score"]
 
