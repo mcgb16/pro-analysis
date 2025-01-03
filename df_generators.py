@@ -54,27 +54,37 @@ def create_player_analysis_dataframe(league_date_filtered_df):
     ]
 
     player_analysis_agg_dict = {
-            "position": "first",
-            "kda": "mean",
-            "dpm": "mean",
-            "earned gpm": "mean",
-            "geff": "mean",
-            "wcpm": "mean",
-            "wpm": "mean",
-            "vspm": "mean",
-            "cspm": "mean",
-            "golddiffat15": "mean",
-            "csdiffat15": "mean",
-            "xpdiffat15": "mean",
-            "firstbloodkill": "sum",
-            "firstbloodassist": "sum",
-            "firstbloodvictim": "sum",
-            "damageshare": "mean",
-            "earnedgoldshare": "mean",
-            "geff team": "mean",
-            "kp" : "mean"
-        }
+        "position": "first",
+        "kda": "mean",
+        "dpm": "mean",
+        "earned gpm": "mean",
+        "geff": "mean",
+        "wcpm": "mean",
+        "wpm": "mean",
+        "vspm": "mean",
+        "cspm": "mean",
+        "golddiffat15": "mean",
+        "csdiffat15": "mean",
+        "xpdiffat15": "mean",
+        "firstbloodkill": "sum",
+        "firstbloodassist": "sum",
+        "firstbloodvictim": "sum",
+        "damageshare": "mean",
+        "earnedgoldshare": "mean",
+        "geff team": "mean",
+        "kp" : "mean"
+    }
+
+    needed_columns = {
+        "total_score" : 0,
+        "split" : league_date_filtered_df["split"].iloc[0],
+        "patch" : float(league_date_filtered_df["patch"].iloc[0]),
+        "date" : league_date_filtered_df["date"].iloc[0],
+        "playoffs" : int(league_date_filtered_df["playoffs"].iloc[0])
+    }
 
     league_player_analysis_df = league_date_filtered_df[columns_player_analysis].copy().groupby('playername').agg(player_analysis_agg_dict).reset_index()
+
+    league_player_analysis_df = league_player_analysis_df.assign(**needed_columns)
 
     return league_player_analysis_df
