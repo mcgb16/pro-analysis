@@ -1,5 +1,3 @@
-import pandas as pd
-import numpy as np
 import db_conn as conn
 import df_generators as df_gen
 import plot_creation as plt
@@ -37,3 +35,5 @@ if not update_player:
 pl_top5_list = analysis.create_pltop5_dict_list(split, playoff)
 
 plt.create_sunburst_plot(cblol_top5_list)
+
+plt.create_icicle_plot(cblol_player_analysis_df)

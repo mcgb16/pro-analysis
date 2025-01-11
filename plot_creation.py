@@ -34,3 +34,54 @@ def create_sunburst_plot(top5_list):
     fig.show()
 
     return
+
+def create_icicle_plot(league_player_analysis_df):
+    top_5_players = league_player_analysis_df.nlargest(5, "total_score")
+    top_3_per_lane = league_player_analysis_df.groupby("position").apply(lambda x: x.nlargest(3, "total_score")).reset_index(drop=True)
+    top_1_per_lane = league_player_analysis_df.groupby("position").apply(lambda x: x.nlargest(1, "total_score")).reset_index(drop=True)
+
+    hierarchical_data = []
+    
+    # Top 5
+    for _, player in top_5_players.iterrows():
+        player_data = {
+            "level_1": "Top 5 Players",
+            "level_2": player["playername"],
+            "score": player["total_score"]
+        }
+        hierarchical_data.append(player_data)
+    
+    # Top 3 por lane
+    for _, player in top_3_per_lane.iterrows():
+        player_data = {
+            "level_1": "Top 3 per Lane",
+            "level_2": player["position"],
+            "level_3": player["playername"],
+            "score": player["total_score"]
+        }
+        hierarchical_data.append(player_data)
+    
+    # Top 1 por lane
+    for _, player in top_1_per_lane.iterrows():
+        player_data = {
+            "level_1": "Top 1 per Lane",
+            "level_2": player["position"],
+            "level_3": player["playername"],
+            "score": player["total_score"]
+        }
+        hierarchical_data.append(player_data)
+    
+    df = pd.DataFrame(hierarchical_data)
+    
+    fig = px.icicle(
+        df,
+        path=["level_1", "level_2", "level_3"],
+        values="score",
+        title="Icicle Plot dos Top Jogadores por Lane",
+    )
+    
+    fig.update_traces(hovertemplate="")
+
+    fig.show()
+
+    return
