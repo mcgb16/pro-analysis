@@ -45,7 +45,7 @@ def insert_first_blood_score(league_player_analysis_df):
     return
 
 def create_plscore_dict_list(league_player_analysis_df):
-    score_filter = ["playername", "split", "playoffs", "date", "total_score"]
+    score_filter = ["playername", "position", "split", "playoffs", "date", "total_score"]
 
     league_player_score_list = league_player_analysis_df[score_filter].to_dict(orient="records")
 
