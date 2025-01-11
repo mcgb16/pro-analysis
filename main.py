@@ -1,7 +1,6 @@
-import pandas as pd
-import numpy as np
 import db_conn as conn
 import df_generators as df_gen
+import plot_creation as plt
 import analysis
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
@@ -34,3 +33,7 @@ if not update_player:
     conn.create_player_record(cblol_player_score_list)
 
 pl_top5_list = analysis.create_pltop5_dict_list(split, playoff)
+
+plt.create_sunburst_plot(cblol_top5_list)
+
+plt.create_icicle_plot(cblol_player_analysis_df)
