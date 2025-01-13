@@ -4,7 +4,9 @@ import plot_creation as plt
 import analysis
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
-date_filter = input("Digite uma data (YYYY-MM-DD): ")
+date = input("Digite uma data (YYYY-MM-DD): ")
+date_filter = []
+date_filter.append(date)
 split = "Split 1"
 week = "Semana 1"
 playoff = 0
