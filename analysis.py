@@ -52,7 +52,7 @@ def create_plscore_dict_list(league_player_analysis_df):
     return league_player_score_list
 
 def create_pltop5_dict_list(split, is_playoffs):
-    player_search = conn.get_player(split, is_playoffs)
+    player_search = conn.get_stage_player(split, is_playoffs)
 
     pl_top5_list = []
 
