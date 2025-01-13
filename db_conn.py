@@ -112,13 +112,32 @@ def update_week_player_record(pl_list):
     else:
         return True
 
-def get_player(split, playoff):
+def get_stage_player(split, playoff):
     search_filter = {
         "split": split,
         "playoffs": playoff,
     }
 
     results = all_pl_score_collection.find(search_filter)
+
+    return results
+
+def get_player(split):
+    search_filter = {
+        "split": split
+    }
+
+    results = all_pl_score_collection.find(search_filter)
+
+    return results
+
+def get_week_player(split, week):
+    search_filter = {
+        "split": split,
+        "week": week,
+    }
+
+    results = week_pl_score_collection.find(search_filter)
 
     return results
 
