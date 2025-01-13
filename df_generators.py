@@ -25,7 +25,8 @@ def create_league_dataframe(lol_df, league):
     return lol_league_df
 
 def filter_league_dataframe_by_date(league_df, date_filter):
-    league_filtered_df = league_df[league_df["date"].str.contains(date_filter)]
+    regex_date_filter = "|".join(date_filter)
+    league_filtered_df = league_df[league_df["date"].str.contains(regex_date_filter)]
 
     return league_filtered_df
 
@@ -88,3 +89,8 @@ def create_player_analysis_dataframe(league_date_filtered_df):
     league_player_analysis_df = league_player_analysis_df.assign(**needed_columns)
 
     return league_player_analysis_df
+
+def create_dataframe_from_list(dict_list):
+    df = pd.DataFrame(dict_list)
+
+    return df

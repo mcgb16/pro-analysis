@@ -4,8 +4,11 @@ import plot_creation as plt
 import analysis
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
-date_filter = input("Digite uma data (YYYY-MM-DD): ")
+date = input("Digite uma data (YYYY-MM-DD): ")
+date_filter = []
+date_filter.append(date)
 split = "Split 1"
+week = "Semana 1"
 playoff = 0
 
 
@@ -27,6 +30,14 @@ conn.create_top5(cblol_top5_list)
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
+week_cblol_player_score_list = analysis.create_plweek_dict_list(cblol_player_analysis_df)
+update_week_player = conn.update_week_player_record(week_cblol_player_score_list)
+
+if not update_week_player:
+    for i in week_cblol_player_score_list:
+        i["date"] = [i["date"]]
+    conn.create_week_player_record(week_cblol_player_score_list)
+
 if not update_player:
     for i in cblol_player_score_list:
         i["date"] = [i["date"]]
@@ -34,6 +45,17 @@ if not update_player:
 
 pl_top5_list = analysis.create_pltop5_dict_list(split, playoff)
 
+stage_player_list = conn.get_stage_player(split, playoff)
+week_player_list = conn.get_week_player(split, week)
+all_player_list = conn.get_player(split)
+
+stage_player_df = df_gen.create_dataframe_from_list(stage_player_list)
+week_player_df = df_gen.create_dataframe_from_list(week_player_list)
+all_player_df = df_gen.create_dataframe_from_list(all_player_list)
+
 plt.create_sunburst_plot(cblol_top5_list)
 
-plt.create_icicle_plot(cblol_player_analysis_df)
+plt.create_icicle_plot(cblol_player_analysis_df, "Rodada")
+plt.create_icicle_plot(stage_player_df, "Fase")
+plt.create_icicle_plot(week_player_df, "Semana")
+plt.create_icicle_plot(all_player_df, "Camp Todo")
