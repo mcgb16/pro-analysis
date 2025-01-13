@@ -27,6 +27,14 @@ conn.create_top5(cblol_top5_list)
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
+week_cblol_player_score_list = analysis.create_plweek_dict_list(cblol_player_analysis_df)
+update_week_player = conn.update_week_player_record(week_cblol_player_score_list)
+
+if not update_week_player:
+    for i in week_cblol_player_score_list:
+        i["date"] = [i["date"]]
+    conn.create_week_player_record(week_cblol_player_score_list)
+
 if not update_player:
     for i in cblol_player_score_list:
         i["date"] = [i["date"]]
