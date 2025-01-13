@@ -88,3 +88,8 @@ def create_player_analysis_dataframe(league_date_filtered_df):
     league_player_analysis_df = league_player_analysis_df.assign(**needed_columns)
 
     return league_player_analysis_df
+
+def create_dataframe_from_list(dict_list):
+    df = pd.DataFrame(dict_list)
+
+    return df
