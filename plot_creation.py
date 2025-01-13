@@ -35,7 +35,7 @@ def create_sunburst_plot(top5_list):
 
     return
 
-def create_icicle_plot(league_player_analysis_df):
+def create_icicle_plot(league_player_analysis_df, custom_title):
     top_5_players = league_player_analysis_df.nlargest(5, "total_score")
     top_3_per_lane = league_player_analysis_df.groupby("position").apply(lambda x: x.nlargest(3, "total_score")).reset_index(drop=True)
     top_1_per_lane = league_player_analysis_df.groupby("position").apply(lambda x: x.nlargest(1, "total_score")).reset_index(drop=True)
@@ -77,7 +77,7 @@ def create_icicle_plot(league_player_analysis_df):
         df,
         path=["level_1", "level_2", "level_3"],
         values="score",
-        title="Icicle Plot dos Top Jogadores por Lane",
+        title=custom_title,
     )
     
     fig.update_traces(hovertemplate="")
