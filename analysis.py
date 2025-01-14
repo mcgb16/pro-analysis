@@ -78,8 +78,20 @@ def create_pltop5_dict_list(split, is_playoffs):
 def create_plweek_dict_list(league_player_analysis_df):
     score_filter = ["playername", "position", "teamname", "split", "date", "week", "total_score"]
 
-    league_player_analysis_df["week"] = input("Qual semana essa rodada faz parte? (Semana x) ")
-
     league_player_score_list = league_player_analysis_df[score_filter].to_dict(orient="records")
 
     return league_player_score_list
+
+def create_team_dict_list(team_analysis_df):
+    score_filter = ["teamname", "split", "playoffs", "date", "total_score"]
+
+    team_score_list = team_analysis_df[score_filter].to_dict(orient="records")
+
+    return team_score_list
+
+def create_team_week_dict_list(team_analysis_df):
+    score_filter = ["teamname", "split", "week", "playoffs", "date", "total_score"]
+
+    team_score_list = team_analysis_df[score_filter].to_dict(orient="records")
+
+    return team_score_list
