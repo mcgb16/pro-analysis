@@ -43,6 +43,23 @@ if not update_player:
         i["date"] = [i["date"]]
     conn.create_player_record(cblol_player_score_list)
 
+cblol_team_analysis_df = df_gen.create_team_dataframe(cblol_player_analysis_df)
+cblol_team_score_list = analysis.create_team_dict_list(cblol_team_analysis_df)
+week_cblol_team_score_list = analysis.create_team_week_dict_list(cblol_team_analysis_df)
+
+update_team = conn.update_team_record(cblol_team_score_list)
+update_week_team = conn.update_week_team_record(week_cblol_team_score_list)
+
+if not update_week_team:
+    for i in week_cblol_team_score_list:
+        i["date"] = [i["date"]]
+    conn.create_week_team_record(week_cblol_team_score_list)
+
+if not update_team:
+    for i in cblol_team_score_list:
+        i["date"] = [i["date"]]
+    conn.create_team_record(cblol_team_score_list)
+
 pl_top5_list = analysis.create_pltop5_dict_list(split, playoff)
 
 stage_player_list = conn.get_stage_player(split, playoff)
@@ -53,9 +70,9 @@ stage_player_df = df_gen.create_dataframe_from_list(stage_player_list)
 week_player_df = df_gen.create_dataframe_from_list(week_player_list)
 all_player_df = df_gen.create_dataframe_from_list(all_player_list)
 
-plt.create_sunburst_plot(cblol_top5_list)
+# plt.create_sunburst_plot(cblol_top5_list)
 
-plt.create_icicle_plot(cblol_player_analysis_df, "Rodada")
-plt.create_icicle_plot(stage_player_df, "Fase")
-plt.create_icicle_plot(week_player_df, "Semana")
-plt.create_icicle_plot(all_player_df, "Camp Todo")
+# plt.create_icicle_plot(cblol_player_analysis_df, "Rodada")
+# plt.create_icicle_plot(stage_player_df, "Fase")
+# plt.create_icicle_plot(week_player_df, "Semana")
+# plt.create_icicle_plot(all_player_df, "Camp Todo")
