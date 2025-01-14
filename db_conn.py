@@ -8,6 +8,8 @@ conn = client[ext.db]
 top5_collection = conn[ext.top5_collection]
 all_pl_score_collection = conn[ext.all_pl_score_collection]
 week_pl_score_collection = conn[ext.week_pl_score_collection]
+all_team_score_collection = conn[ext.all_team_score_collection]
+week_team_score_collection = conn[ext.week_team_score_collection]
 
 def create_top5(top5_list):
     try:
