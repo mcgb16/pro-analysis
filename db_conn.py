@@ -239,11 +239,31 @@ def update_team_record(team_list):
     else:
         return True
 
-def get_team():
-    pass
+def get_team(split):
+    search_filter = {
+        "split": split
+    }
 
-def get_stage_team():
-    pass
+    results = all_team_score_collection.find(search_filter)
 
-def get_week_team():
-    pass
+    return results
+
+def get_stage_team(split, playoffs):
+    search_filter = {
+        "split": split,
+        "playoffs": playoffs
+    }
+
+    results = all_team_score_collection.find(search_filter)
+
+    return results
+
+def get_week_team(split, week):
+    search_filter = {
+        "split": split,
+        "week": week
+    }
+
+    results = all_team_score_collection.find(search_filter)
+
+    return results
