@@ -33,6 +33,7 @@ def filter_league_dataframe_by_date(league_df, date_filter):
 def create_player_analysis_dataframe(league_date_filtered_df):
     columns_player_analysis = [
     "playername",
+    "teamname",
     "position",
     "kda",
     "dpm",
@@ -56,6 +57,7 @@ def create_player_analysis_dataframe(league_date_filtered_df):
 
     player_analysis_agg_dict = {
         "position": "first",
+        "teamname": "first",
         "kda": "mean",
         "dpm": "mean",
         "earned gpm": "mean",
