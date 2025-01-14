@@ -78,12 +78,15 @@ def create_player_analysis_dataframe(league_date_filtered_df):
         "kp" : "mean"
     }
 
+    week = input("Qual semana essa rodada faz parte? (Semana x) ")
+    
     needed_columns = {
         "total_score" : 0,
         "split" : league_date_filtered_df["split"].iloc[0],
         "patch" : float(league_date_filtered_df["patch"].iloc[0]),
         "date" : league_date_filtered_df["date"].iloc[0],
-        "playoffs" : int(league_date_filtered_df["playoffs"].iloc[0])
+        "playoffs" : int(league_date_filtered_df["playoffs"].iloc[0]),
+        "week" : week
     }
 
     league_player_analysis_df = league_date_filtered_df[columns_player_analysis].copy().groupby('playername').agg(player_analysis_agg_dict).reset_index()
@@ -96,3 +99,27 @@ def create_dataframe_from_list(dict_list):
     df = pd.DataFrame(dict_list)
 
     return df
+
+def create_team_dataframe(player_df):
+    columns_team_analysis = [
+        "teamname",
+        "total_score"
+    ]
+
+    team_add_dict = {
+        "total_score" : "sum"
+    }
+    
+    needed_columns = {
+        "split" : player_df["split"].iloc[0],
+        "patch" : float(player_df["patch"].iloc[0]),
+        "date" : player_df["date"].iloc[0],
+        "playoffs" : int(player_df["playoffs"].iloc[0]),
+        "week" : player_df["week"].iloc[0]
+    }
+
+    team_df = player_df[columns_team_analysis].copy().groupby('teamname').agg(team_add_dict).reset_index()
+
+    team_df = team_df.assign(**needed_columns)
+
+    return team_df
