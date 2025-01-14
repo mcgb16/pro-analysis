@@ -70,6 +70,14 @@ stage_player_df = df_gen.create_dataframe_from_list(stage_player_list)
 week_player_df = df_gen.create_dataframe_from_list(week_player_list)
 all_player_df = df_gen.create_dataframe_from_list(all_player_list)
 
+stage_team_list = conn.get_stage_team(split, playoff)
+week_team_list = conn.get_week_team(split, week)
+all_team_list = conn.get_team(split)
+
+stage_team_df = df_gen.create_dataframe_from_list(stage_team_list)
+week_team_df = df_gen.create_dataframe_from_list(week_team_list)
+all_team_df = df_gen.create_dataframe_from_list(all_team_list)
+
 # plt.create_sunburst_plot(cblol_top5_list)
 
 # plt.create_icicle_plot(cblol_player_analysis_df, "Rodada")
