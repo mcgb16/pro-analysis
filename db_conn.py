@@ -264,6 +264,6 @@ def get_week_team(split, week):
         "week": week
     }
 
-    results = all_team_score_collection.find(search_filter)
+    results = week_team_score_collection.find(search_filter)
 
     return results
