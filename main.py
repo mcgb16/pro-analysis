@@ -84,6 +84,12 @@ all_team_df = df_gen.create_dataframe_from_list(all_team_list)
 stage_player_info_list = conn.get_info_player(split, playoff)
 stage_player_info_df = df_gen.create_dataframe_from_list(stage_player_info_list)
 
+top5_df = df_gen.create_dataframe_from_list(cblol_top5_list)
+
+round_player_df = df_gen.create_dataframe_from_list(cblol_player_score_list)
+
+round_player_df.to_csv("extras/csv/round_player.csv", index=False)
+top5_df.to_csv("extras/csv/top5.csv", index=False)
 stage_player_df.to_csv("extras/csv/stage_player.csv", index=False)
 week_player_df.to_csv("extras/csv/week_player.csv", index=False)
 all_player_df.to_csv("extras/csv/all_player.csv", index=False)
