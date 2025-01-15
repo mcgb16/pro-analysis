@@ -26,7 +26,10 @@ first_blood_score_insert = analysis.insert_first_blood_score(cblol_player_analys
 
 cblol_player_score_list = analysis.create_plscore_dict_list(cblol_player_analysis_df)
 
+cblol_player_analysis_list = analysis.create_player_analysis_dict_list(cblol_player_analysis_df)
+
 conn.create_top5(cblol_top5_list)
+conn.create_info_player_record(cblol_player_analysis_list)
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
