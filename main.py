@@ -26,7 +26,10 @@ first_blood_score_insert = analysis.insert_first_blood_score(cblol_player_analys
 
 cblol_player_score_list = analysis.create_plscore_dict_list(cblol_player_analysis_df)
 
+cblol_player_analysis_list = analysis.create_player_analysis_dict_list(cblol_player_analysis_df)
+
 conn.create_top5(cblol_top5_list)
+conn.create_info_player_record(cblol_player_analysis_list)
 
 update_player = conn.update_player_record(cblol_player_score_list)
 
@@ -78,12 +81,22 @@ stage_team_df = df_gen.create_dataframe_from_list(stage_team_list)
 week_team_df = df_gen.create_dataframe_from_list(week_team_list)
 all_team_df = df_gen.create_dataframe_from_list(all_team_list)
 
+stage_player_info_list = conn.get_info_player(split, playoff)
+stage_player_info_df = df_gen.create_dataframe_from_list(stage_player_info_list)
+
+top5_df = df_gen.create_dataframe_from_list(cblol_top5_list)
+
+round_player_df = df_gen.create_dataframe_from_list(cblol_player_score_list)
+
+round_player_df.to_csv("extras/csv/round_player.csv", index=False)
+top5_df.to_csv("extras/csv/top5.csv", index=False)
 stage_player_df.to_csv("extras/csv/stage_player.csv", index=False)
 week_player_df.to_csv("extras/csv/week_player.csv", index=False)
 all_player_df.to_csv("extras/csv/all_player.csv", index=False)
 stage_team_df.to_csv("extras/csv/stage_team.csv", index=False)
 week_team_df.to_csv("extras/csv/week_team.csv", index=False)
 all_team_df.to_csv("extras/csv/all_team.csv", index=False)
+stage_player_info_df.to_csv("extras/csv/stage_player_info.csv", index=False)
 
 # plt.create_sunburst_plot(cblol_top5_list)
 

@@ -10,6 +10,7 @@ all_pl_score_collection = conn[ext.all_pl_score_collection]
 week_pl_score_collection = conn[ext.week_pl_score_collection]
 all_team_score_collection = conn[ext.all_team_score_collection]
 week_team_score_collection = conn[ext.week_team_score_collection]
+player_info_collection = conn[ext.player_info_collection]
 
 def create_top5(top5_list):
     try:
@@ -265,5 +266,34 @@ def get_week_team(split, week):
     }
 
     results = week_team_score_collection.find(search_filter)
+
+    return results
+
+def create_info_player_record(pl_list):
+    try:
+        for pl in pl_list:
+            filter_condition = {
+                "date": pl["date"],
+                "playername": pl["playername"]
+                }
+
+            upsert_pl = {
+                "$setOnInsert": pl
+            }
+            
+            player_info_collection.update_one(filter_condition, upsert_pl, upsert=True)
+        
+        return True
+    except Exception as e:
+        print(e)
+        return e
+    
+def get_info_player(split, playoffs):
+    search_filter = {
+        "split": split,
+        "playoffs": playoffs
+    }
+
+    results = player_info_collection.find(search_filter)
 
     return results
