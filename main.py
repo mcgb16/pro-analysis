@@ -81,12 +81,16 @@ stage_team_df = df_gen.create_dataframe_from_list(stage_team_list)
 week_team_df = df_gen.create_dataframe_from_list(week_team_list)
 all_team_df = df_gen.create_dataframe_from_list(all_team_list)
 
+stage_player_info_list = conn.get_info_player(split, playoff)
+stage_player_info_df = df_gen.create_dataframe_from_list(stage_player_info_list)
+
 stage_player_df.to_csv("extras/csv/stage_player.csv", index=False)
 week_player_df.to_csv("extras/csv/week_player.csv", index=False)
 all_player_df.to_csv("extras/csv/all_player.csv", index=False)
 stage_team_df.to_csv("extras/csv/stage_team.csv", index=False)
 week_team_df.to_csv("extras/csv/week_team.csv", index=False)
 all_team_df.to_csv("extras/csv/all_team.csv", index=False)
+stage_player_info_df.to_csv("extras/csv/stage_player_info.csv", index=False)
 
 # plt.create_sunburst_plot(cblol_top5_list)
 
