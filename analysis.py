@@ -44,30 +44,6 @@ def insert_first_blood_score(league_player_analysis_df):
     
     return
 
-def create_pltop5_dict_list(split, is_playoffs):
-    player_search = conn.get_stage_player(split, is_playoffs)
-
-    pl_top5_list = []
-
-    for i in player_search:
-        top5_search = conn.get_top5(split, is_playoffs)
-        pl_top5_dict = {}
-        top5s = []
-        scr = []
-        dates = []
-        for j in top5_search:
-            if i["playername"] in j:
-                top5s.append(j["sector"])
-                scr.append(j[i["playername"]]["score"])
-                dates.append(j["date"])
-        pl_top5_dict["player"] = i["playername"]
-        pl_top5_dict["top 5s"] = top5s
-        pl_top5_dict["scores"] = scr
-        pl_top5_dict["dates"] = dates
-        pl_top5_list.append(pl_top5_dict.copy())
-
-    return pl_top5_list
-
 def create_player_analysis_dict_list(league_player_analysis_df):
     player_analysis_list = league_player_analysis_df.to_dict(orient="records")
 
