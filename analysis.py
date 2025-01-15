@@ -95,3 +95,8 @@ def create_team_week_dict_list(team_analysis_df):
     team_score_list = team_analysis_df[score_filter].to_dict(orient="records")
 
     return team_score_list
+
+def create_player_analysis_dict_list(league_player_analysis_df):
+    player_analysis_list = league_player_analysis_df.to_dict(orient="records")
+
+    return player_analysis_list
