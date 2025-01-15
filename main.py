@@ -4,12 +4,12 @@ import plot_creation as plt
 import analysis
 
 lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
+
 date = input("Digite uma data (YYYY-MM-DD): ")
 date_filter = []
 date_filter.append(date)
+
 split = "Split 1"
-week = "Semana 1"
-playoff = 0
 
 
 lol_df = df_gen.create_lol_dataframe(lol_csv_path)
@@ -29,7 +29,7 @@ cblol_player_analysis_list = analysis.create_player_analysis_dict_list(cblol_pla
 conn.create_top5(cblol_top5_list)
 conn.create_info_player_record(cblol_player_analysis_list)
 
-stage_player_info_list = conn.get_info_player(split, playoff)
-stage_player_info_df = df_gen.create_dataframe_from_list(stage_player_info_list)
+player_info_list = conn.get_info_player(split)
+player_info_df = df_gen.create_dataframe_from_list(player_info_list)
 
-stage_player_info_df.to_csv("extras/csv/stage_player_info.csv", index=False)
+player_info_df.to_csv("extras/csv/stage_player_info.csv", index=False)
