@@ -56,10 +56,9 @@ def create_info_player_record(pl_list):
         print(e)
         return e
     
-def get_info_player(split, playoffs):
+def get_info_player(split):
     search_filter = {
-        "split": split,
-        "playoffs": playoffs
+        "split": split
     }
 
     results = player_info_collection.find(search_filter)
