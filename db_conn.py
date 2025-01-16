@@ -27,10 +27,9 @@ def create_top10(top10_list):
         print(e)
         return e
 
-def get_top10(split, playoff):
+def get_top10(split):
     search_filter = {
-        "split": split,
-        "playoffs": playoff,
+        "split": split
     }
 
     results = top10_collection.find(search_filter)
