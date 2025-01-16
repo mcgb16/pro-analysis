@@ -27,10 +27,7 @@ def create_top10_dict_list(league_player_analysis_df):
                     "total_score"
                 ] += score
 
-                top10_dict[playernames] = {
-                    "value" : top10_df.iloc[rank][column],
-                    "score" : score
-                }
+                top10_dict[f"Rank {rank + 1} | {score}"] = f"{playernames} | {top10_df.iloc[rank][column]}"
                 
         top10_list.append(top10_dict.copy())
     return top10_list
