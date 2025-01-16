@@ -32,4 +32,9 @@ conn.create_info_player_record(cblol_player_analysis_list)
 player_info_list = conn.get_info_player(split)
 player_info_df = df_gen.create_dataframe_from_list(player_info_list)
 
+all_top10_list = conn.get_top10(split)
+all_top10_df = df_gen.create_dataframe_from_list(all_top10_list)
+
 player_info_df.to_csv("extras/csv/stage_player_info.csv", index=False)
+all_top10_df.to_csv("extras/csv/top10.csv", index=False)
+
