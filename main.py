@@ -20,13 +20,13 @@ cblol_date_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_f
 
 cblol_player_analysis_df = df_gen.create_player_analysis_dataframe(cblol_date_filtered_df)
 
-cblol_top5_list = analysis.create_top5_dict_list(cblol_player_analysis_df)
+cblol_top10_list = analysis.create_top10_dict_list(cblol_player_analysis_df)
 
 first_blood_score_insert = analysis.insert_first_blood_score(cblol_player_analysis_df)
 
 cblol_player_analysis_list = analysis.create_player_analysis_dict_list(cblol_player_analysis_df)
 
-conn.create_top5(cblol_top5_list)
+conn.create_top10(cblol_top10_list)
 conn.create_info_player_record(cblol_player_analysis_list)
 
 player_info_list = conn.get_info_player(split)

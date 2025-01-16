@@ -1,17 +1,17 @@
 import db_conn as conn
 
-def create_top5_dict_list(league_player_analysis_df):
-    scores = [10, 8, 6, 4, 2]
+def create_top10_dict_list(league_player_analysis_df):
+    scores = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
     columns_to_score = [
         "kda", "dpm", "vspm", "cspm", "wcpm", "wpm", "earned gpm", "geff", "geff team", "xpdiffat15", "csdiffat15", "golddiffat15", "kp"
     ]
 
-    top5_list = []
+    top10_list = []
 
     for column in columns_to_score:
-        top5_df = league_player_analysis_df.nlargest(5, column)[["playername",column]]
+        top10_df = league_player_analysis_df.nlargest(10, column)[["playername",column]]
 
-        top5_dict = {
+        top10_dict = {
             "sector": column,
             "split" : league_player_analysis_df["split"].iloc[0],
             "patch" : league_player_analysis_df["patch"].iloc[0],
@@ -20,20 +20,20 @@ def create_top5_dict_list(league_player_analysis_df):
         }
         
         for rank, score in enumerate(scores):
-            if rank < len(top5_df):
-                playernames = top5_df.iloc[rank]["playername"]
+            if rank < len(top10_df):
+                playernames = top10_df.iloc[rank]["playername"]
                 league_player_analysis_df.loc[
                     league_player_analysis_df["playername"] == playernames, 
                     "total_score"
                 ] += score
 
-                top5_dict[playernames] = {
-                    "value" : top5_df.iloc[rank][column],
+                top10_dict[playernames] = {
+                    "value" : top10_df.iloc[rank][column],
                     "score" : score
                 }
                 
-        top5_list.append(top5_dict.copy())
-    return top5_list
+        top10_list.append(top10_dict.copy())
+    return top10_list
 
 def insert_first_blood_score(league_player_analysis_df):
     league_player_analysis_df["total_score"] += (

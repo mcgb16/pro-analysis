@@ -5,35 +5,35 @@ client = MongoClient(ext.string_connection)
 
 conn = client[ext.db]
 
-top5_collection = conn[ext.top5_collection]
+top10_collection = conn[ext.top10_collection]
 player_info_collection = conn[ext.player_info_collection]
 
-def create_top5(top5_list):
+def create_top10(top10_list):
     try:
-        for top5 in top5_list:
+        for top10 in top10_list:
             filter_condition = {
-                "date": top5["date"],
-                "sector": top5["sector"]
+                "date": top10["date"],
+                "sector": top10["sector"]
                 }
 
-            upsert_top5 = {
-                "$setOnInsert": top5
+            upsert_top10 = {
+                "$setOnInsert": top10
             }
             
-            top5_collection.update_one(filter_condition, upsert_top5, upsert=True)
+            top10_collection.update_one(filter_condition, upsert_top10, upsert=True)
         
         return True
     except Exception as e:
         print(e)
         return e
 
-def get_top5(split, playoff):
+def get_top10(split, playoff):
     search_filter = {
         "split": split,
         "playoffs": playoff,
     }
 
-    results = top5_collection.find(search_filter)
+    results = top10_collection.find(search_filter)
 
     return results
 
