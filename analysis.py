@@ -10,14 +10,6 @@ def create_top10_dict_list(league_player_analysis_df):
 
     for column in columns_to_score:
         top10_df = league_player_analysis_df.nlargest(10, column)[["playername",column]]
-
-        top10_dict = {
-            "sector": column,
-            "split" : league_player_analysis_df["split"].iloc[0],
-            "patch" : league_player_analysis_df["patch"].iloc[0],
-            "date" : league_player_analysis_df["date"].iloc[0],
-            "playoffs" : int(league_player_analysis_df["playoffs"].iloc[0])
-        }
         
         for rank, score in enumerate(scores):
             if rank < len(top10_df):
@@ -27,9 +19,19 @@ def create_top10_dict_list(league_player_analysis_df):
                     "total_score"
                 ] += score
 
-                top10_dict[f"Rank {rank + 1} | {score}"] = f"{playernames} | {top10_df.iloc[rank][column]}"
+                top10_dict = {
+                    "sector": column,
+                    "split" : league_player_analysis_df["split"].iloc[0],
+                    "patch" : league_player_analysis_df["patch"].iloc[0],
+                    "date" : league_player_analysis_df["date"].iloc[0],
+                    "playoffs" : int(league_player_analysis_df["playoffs"].iloc[0]),
+                    "rank": rank + 1,
+                    "playername": playernames,
+                    "value": top10_df.iloc[rank][column],
+                    "score" : score
+                }
                 
-        top10_list.append(top10_dict.copy())
+                top10_list.append(top10_dict.copy())
     return top10_list
 
 def insert_first_blood_score(league_player_analysis_df):

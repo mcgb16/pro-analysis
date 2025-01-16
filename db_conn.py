@@ -13,7 +13,8 @@ def create_top10(top10_list):
         for top10 in top10_list:
             filter_condition = {
                 "date": top10["date"],
-                "sector": top10["sector"]
+                "sector": top10["sector"],
+                "rank": top10["rank"]
                 }
 
             upsert_top10 = {
