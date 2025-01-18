@@ -78,7 +78,7 @@ def create_player_analysis_dataframe(league_date_filtered_df):
         "kp" : "mean"
     }
 
-    week = input("Qual semana essa rodada faz parte? (Semana x) ")
+    round = input(f"Qual rodada essa data faz parte: ")
     
     needed_columns = {
         "total_score" : 0,
@@ -86,7 +86,7 @@ def create_player_analysis_dataframe(league_date_filtered_df):
         "patch" : float(league_date_filtered_df["patch"].iloc[0]),
         "date" : league_date_filtered_df["date"].iloc[0],
         "playoffs" : int(league_date_filtered_df["playoffs"].iloc[0]),
-        "week" : week
+        "round" : round
     }
 
     league_player_analysis_df = league_date_filtered_df[columns_player_analysis].copy().groupby('playername').agg(player_analysis_agg_dict).reset_index()
