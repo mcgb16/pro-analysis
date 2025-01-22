@@ -23,7 +23,7 @@ def create_top10_dict_list(league_player_analysis_df):
                     "sector": column,
                     "split" : league_player_analysis_df["split"].iloc[0],
                     "patch" : league_player_analysis_df["patch"].iloc[0],
-                    "date" : league_player_analysis_df["date"].iloc[0],
+                    "round" : league_player_analysis_df["round"].iloc[0],
                     "playoffs" : int(league_player_analysis_df["playoffs"].iloc[0]),
                     "rank": rank + 1,
                     "playername": playernames,
