@@ -36,8 +36,6 @@ def create_top10_dict_list(league_player_analysis_df):
 
     return top10_list
 
-
-
 def insert_first_blood_score(league_player_analysis_df):
     league_player_analysis_df["total_score"] += (
         league_player_analysis_df["firstbloodkill"] * 5
