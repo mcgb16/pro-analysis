@@ -9,30 +9,34 @@ def create_top10_dict_list(league_player_analysis_df):
     top10_list = []
 
     for column in columns_to_score:
-        top10_df = league_player_analysis_df.nlargest(10, column)[["playername",column]]
-        
-        for rank, score in enumerate(scores):
-            if rank < len(top10_df):
-                playernames = top10_df.iloc[rank]["playername"]
-                league_player_analysis_df.loc[
-                    league_player_analysis_df["playername"] == playernames, 
-                    "total_score"
-                ] += score
+        # Sort the DataFrame by the current column in descending order
+        sorted_df = league_player_analysis_df.sort_values(by=column, ascending=False)
 
-                top10_dict = {
-                    "sector": column,
-                    "split" : league_player_analysis_df["split"].iloc[0],
-                    "patch" : league_player_analysis_df["patch"].iloc[0],
-                    "round" : league_player_analysis_df["round"].iloc[0],
-                    "playoffs" : int(league_player_analysis_df["playoffs"].iloc[0]),
-                    "rank": rank + 1,
-                    "playername": playernames,
-                    "value": top10_df.iloc[rank][column],
-                    "score" : score
-                }
-                
-                top10_list.append(top10_dict.copy())
+        for rank, (index, row) in enumerate(sorted_df.iterrows()):
+            score = scores[rank] if rank < len(scores) else 0  # Assign score based on rank
+
+            top10_dict = {
+                "sector": column,
+                "split": row["split"], # Access values directly from the row
+                "patch": row["patch"],
+                "round": row["round"],
+                "playoffs": int(row["playoffs"]),
+                "rank": rank + 1,
+                "playername": row["playername"],
+                "value": row[column],
+                "score": score
+            }
+
+            top10_list.append(top10_dict.copy())
+            
+            # Update the total score in the original DataFrame (only for top 10)
+            if score > 0:
+                league_player_analysis_df.loc[index, "total_score"] += score
+
+
     return top10_list
+
+
 
 def insert_first_blood_score(league_player_analysis_df):
     league_player_analysis_df["total_score"] += (
