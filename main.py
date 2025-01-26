@@ -3,7 +3,7 @@ import df_generators as df_gen
 import plot_creation as plt
 import analysis
 
-lol_csv_path = "extras/2024_LoL_esports_match_data_from_OraclesElixir.csv"
+lol_csv_path = "extras/2025_LoL_esports_match_data_from_OraclesElixir.csv"
 
 date = input("Digite uma data (YYYY-MM-DD): ")
 date_filter = []
@@ -14,7 +14,7 @@ split = "Split 1"
 
 lol_df = df_gen.create_lol_dataframe(lol_csv_path)
 
-cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
+cblol_df = df_gen.create_league_dataframe(lol_df, "LTA S")
 
 cblol_date_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_filter)
 
