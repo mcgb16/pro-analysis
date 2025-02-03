@@ -1,13 +1,10 @@
 import db_conn as conn
 import df_generators as df_gen
-import plot_creation as plt
 import analysis
 
 lol_csv_path = "extras/2025_LoL_esports_match_data_from_OraclesElixir.csv"
 
-date = input("Digite uma data (YYYY-MM-DD): ")
 date_filter = []
-date_filter.append(date)
 
 split = "Split 1"
 
