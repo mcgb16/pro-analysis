@@ -4,7 +4,7 @@ import analysis
 
 lol_csv_path = "extras/2025_LoL_esports_match_data_from_OraclesElixir.csv"
 
-date_filter = ["2025-01-25", "2025-01-26"]
+date_filter = []
 
 split = "Split 1"
 
