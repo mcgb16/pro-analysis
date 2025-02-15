@@ -63,8 +63,6 @@ rounds_list = [
     "Grande Final"
 ]
 
-year = "2024"
-
 lol_df = df_gen.create_lol_dataframe(lol_csv_path)
 
 cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
@@ -83,10 +81,10 @@ for i, date_filter in enumerate(date_filter_list):
     conn.create_top10(cblol_top10_list)
     conn.create_info_player_record(cblol_player_analysis_list)
 
-player_info_list = conn.get_info_player(year)
+player_info_list = conn.get_info_player()
 player_info_df = df_gen.create_dataframe_from_list(player_info_list)
 
-all_top10_list = conn.get_top10(year)
+all_top10_list = conn.get_top10()
 all_top10_df = df_gen.create_dataframe_from_list(all_top10_list)
 
 player_info_df.to_csv("extras/csv/player_info.csv", index=False)
