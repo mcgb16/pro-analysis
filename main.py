@@ -35,16 +35,44 @@ date_filter_list = [
     "2024-04-20"   # Fase Eliminatória, Grande Final [Série 10]
 ]
 
+rounds_list = [
+    "Rodada 1",
+    "Rodada 2",
+    "Rodada 3",
+    "Rodada 4",
+    "Rodada 5",
+    "Rodada 6",
+    "Rodada 7",
+    "Rodada 8",
+    "Rodada 9",
+    "Rodada 10",
+    "Rodada 11",
+    "Rodada 12",
+    "Rodada 13",
+    "Rodada 14",
+    "Rodada 15",
+    "Rodada 16",
+    "Rodada 17",
+    "Rodada 18",
+    "Rodada 1 Chave Superior",
+    "Semifinal Chave Superior",
+    "Rodada 1 Chave Inferior",
+    "Final da Chave Superior",
+    "Rodada 2 Chave Inferior",
+    "Final da Chave Inferior",
+    "Grande Final"
+]
+
 year = "2024"
 
-for date_filter in date_filter_list:
-    lol_df = df_gen.create_lol_dataframe(lol_csv_path)
+lol_df = df_gen.create_lol_dataframe(lol_csv_path)
 
-    cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
+cblol_df = df_gen.create_league_dataframe(lol_df, "CBLOL")
 
+for i, date_filter in enumerate(date_filter_list):
     cblol_date_filtered_df = df_gen.filter_league_dataframe_by_date(cblol_df, date_filter)
 
-    cblol_player_analysis_df = df_gen.create_player_analysis_dataframe(cblol_date_filtered_df, date_filter)
+    cblol_player_analysis_df = df_gen.create_player_analysis_dataframe(cblol_date_filtered_df, date_filter, rounds_list[i])
 
     cblol_top10_list = analysis.create_top10_dict_list(cblol_player_analysis_df)
 
