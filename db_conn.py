@@ -14,7 +14,8 @@ def create_top10(top10_list):
             filter_condition = {
                 "round": top10["round"],
                 "sector": top10["sector"],
-                "rank": top10["rank"]
+                "rank": top10["rank"],
+                "split": top10["split"]
                 }
 
             upsert_top10 = {
