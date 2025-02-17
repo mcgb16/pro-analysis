@@ -30,7 +30,7 @@ def filter_league_dataframe_by_date(league_df, date_filter):
 
     return league_filtered_df
 
-def create_player_analysis_dataframe(league_date_filtered_df):
+def create_player_analysis_dataframe(league_date_filtered_df, date_filter, round_filter):
     columns_player_analysis = [
     "playername",
     "teamname",
@@ -78,7 +78,10 @@ def create_player_analysis_dataframe(league_date_filtered_df):
         "kp" : "mean"
     }
 
-    round = input(f"Qual rodada essa data faz parte: ")
+    print(f"Data: {date_filter}")
+    print(f"Rodada: {round_filter}")
+    print("##########################")
+    round = round_filter
     
     needed_columns = {
         "total_score" : 0,

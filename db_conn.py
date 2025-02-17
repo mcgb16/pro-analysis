@@ -28,12 +28,8 @@ def create_top10(top10_list):
         print(e)
         return e
 
-def get_top10(year):
-    search_filter = {
-        { "date": { "$regex": f"^{year}" } }
-    }
-
-    results = top10_collection.find(search_filter)
+def get_top10():
+    results = top10_collection.find()
 
     return results
 
@@ -56,11 +52,7 @@ def create_info_player_record(pl_list):
         print(e)
         return e
     
-def get_info_player(year):
-    search_filter = {
-        { "date": { "$regex": f"^{year}" } }
-    }
-
-    results = player_info_collection.find(search_filter)
+def get_info_player():
+    results = player_info_collection.find()
 
     return results
