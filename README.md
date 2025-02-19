@@ -4,7 +4,7 @@ Este projeto analisa dados de partidas de esports de League of Legends, calcula 
 
 ## Vídeo com a Demonstração do Projeto
 
-
+https://youtu.be/YRqX8CMbLgo
 
 ## Estrutura do Projeto
 
